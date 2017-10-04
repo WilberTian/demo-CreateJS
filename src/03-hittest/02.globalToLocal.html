@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS demo: globalToLocal</title>
+	<style type="text/css">
+	body {
+		margin: 0;
+		padding: 7px;
+		background-color: rgba(255,255,255,0);
+	}
+
+	canvas {
+		border: solid 1px rgba(0,0,0,0.05);
+	}
+	</style>
+	<script src="../../libs/easeljs-0.8.2.min.js"></script>
+	<script>
+		var stage, holder;
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			holder = stage.addChild(new createjs.Container());
+			holder.x = holder.y = 150;
+			
+			for (var i=0; i<25; i++) {
+				var shape = new createjs.Shape();
+				shape.graphics.beginFill(createjs.Graphics.getHSL(Math.random()*360,100,50)).drawCircle(0,0,30);
+				shape.x = Math.random()*300-150;
+				shape.y = Math.random()*300-150;
+				holder.addChild(shape); 
+			}
+			
+			createjs.Ticker.on("tick", tick);
+		}
+		
+		function tick(event) {
+			holder.rotation += 3;
+			var l = holder.getNumChildren();
+			for (var i=0; i<l; i++) {
+				var child = holder.getChildAt(i);
+				child.alpha = 0.1;
+				var pt = child.globalToLocal(stage.mouseX, stage.mouseY);
+				if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { child.alpha = 1; }
+			}
+			
+			stage.update(event);
+		}
+	</script>
+</head>
+<body onload="init();">
+	<canvas id="demoCanvas" width="300" height="300">
+		alternate content
+	</canvas>
+</body>
+</html>

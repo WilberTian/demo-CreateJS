@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>basic</title>
+	<style type="text/css">
+	body {
+		margin: 0;
+		padding: 7px;
+		background-color: rgba(255,255,255,0);
+	}
+
+	canvas {
+		border: solid 1px rgba(0,0,0,0.05);
+	}
+	</style>
+	<script src="../../libs/easeljs-0.8.2.min.js"></script>
+	<script>
+		function init() {
+			var stage = new createjs.Stage("demoCanvas");
+			
+			var circle = new createjs.Shape();
+			circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+			circle.x = 100;
+			circle.y = 100;
+			
+			circle.on("click", function() {
+				alert("clicked");
+			});
+			
+			stage.addChild(circle);
+			stage.update();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<canvas id="demoCanvas" width="500" height="200">
+		alternate content
+	</canvas>
+</body>
+</html>

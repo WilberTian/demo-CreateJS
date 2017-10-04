@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hitTest</title>
+	<style type="text/css">
+	body {
+		margin: 0;
+		padding: 7px;
+		background-color: rgba(255,255,255,0);
+	}
+
+	canvas {
+		border: solid 1px rgba(0,0,0,0.05);
+	}
+	</style>
+	<script src="../../libs/easeljs-0.8.2.min.js"></script>
+	<script>
+		var stage, circle;
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			
+			circle = stage.addChild(new createjs.Shape());
+			circle.graphics.beginFill("red").drawCircle(50,50,50);
+			circle.x = 0;
+			circle.y = 0;
+			
+			createjs.Ticker.on("tick", tick);
+		}
+		
+		function tick(event) {
+			circle.alpha = 0.2;
+			if (circle.hitTest(stage.mouseX, stage.mouseY)) { circle.alpha = 1; }
+			stage.update(event);
+		}
+	</script>
+</head>
+<body onload="init();">
+	<canvas id="demoCanvas" width="300" height="100">
+		alternate content
+	</canvas>
+</body>
+</html>
