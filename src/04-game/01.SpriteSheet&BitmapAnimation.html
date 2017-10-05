@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SpriteSheet&BitmapAnimation</title>
+    <style>
+        canvas#demoCanvas {
+            border: 1px solid;
+            background: aliceblue;
+        }
+    </style>
+	<script src="../../libs/easeljs-0.8.2.min.js"></script>
+	<script>
+        var stage;
+        var zombieWalk = new Image();
+        var animation;
+
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			
+			zombieWalk.onload = handleImageLoad;
+		    zombieWalk.onerror = handleImageError;
+		    zombieWalk.crossOrigin="Anonymous";
+		    zombieWalk.src = "./zombie.png";
+
+		}
+
+		function handleImageLoad() {
+			var spriteSheet = new createjs.SpriteSheet({
+			    images: [zombieWalk], 
+			    frames: {width: 200, height: 312, regX: 100, regY: 0}, 
+			    animations: {    
+			        walk: [0, 9, "walk", 0.25]
+			    }
+			});
+
+			createjs.SpriteSheetUtils.addFlippedFrames(spriteSheet, true, false, false);
+			animation = new createjs.Sprite(spriteSheet);
+			animation.gotoAndPlay("walk_h");    
+			
+			animation.name = "zombie";
+			animation.direction = 90;
+			animation.vX = 8;
+			animation.x = 100;
+			animation.y = 32;
+			        
+			animation.currentFrame = 0;
+			stage.addChild(animation);
+
+
+			createjs.Ticker.on("tick", tick);
+			createjs.Ticker.useRAF = true;
+			createjs.Ticker.setFPS(60);
+		}
+
+		function handleImageError() {
+
+		}
+		
+		function tick(event) {
+		    if (animation.x >= stage.canvas.width - 100) {
+		        animation.direction = -90;
+		        animation.gotoAndPlay("walk");     
+		    }
+
+		    if (animation.x < 100) {
+		        animation.direction = 90;
+		        animation.gotoAndPlay("walk_h");     
+		    }
+
+
+		    if (animation.direction == 90) {
+		        animation.x += animation.vX;
+		    }
+		    else {
+		        animation.x -= animation.vX;
+		    }
+
+		    stage.update();
+		}
+
+	</script>
+</head>
+<body onload="init();">
+	<canvas id="demoCanvas" width="1000" height="400">
+		alternate content
+	</canvas>
+</body>
+</html>
