@@ -33,13 +33,13 @@
 			    }
 			});
 
-			createjs.SpriteSheetUtils.addFlippedFrames(spriteSheet, true, false, false);
 			animation = new createjs.Sprite(spriteSheet);
-			animation.gotoAndPlay("walk_h");    
-			
+			animation.gotoAndPlay("walk");    
+			animation.scaleX = -1;
+
 			animation.name = "zombie";
 			animation.direction = 90;
-			animation.vX = 8;
+			animation.vX = 1;
 			animation.x = 100;
 			animation.y = 32;
 			        
@@ -59,12 +59,14 @@
 		function tick(event) {
 		    if (animation.x >= stage.canvas.width - 100) {
 		        animation.direction = -90;
-		        animation.gotoAndPlay("walk");     
+		        animation.gotoAndPlay("walk");    
+		        animation.scaleX = 1;   
 		    }
 
 		    if (animation.x < 100) {
 		        animation.direction = 90;
-		        animation.gotoAndPlay("walk_h");     
+		        animation.gotoAndPlay("walk");   
+				animation.scaleX = -1;  
 		    }
 
 
