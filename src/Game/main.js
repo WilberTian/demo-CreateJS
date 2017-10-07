@@ -2,7 +2,7 @@
 	root.init = init;
 
 	var stage, w, h, loader;
-	var sky, man, ground, hill, hill2;
+	var sky, man, ground, hill, hill2, obstacle;
 
 	function init(){ 
 		stage = new createjs.Stage('demoCanvas');
@@ -15,7 +15,8 @@
 			{src: 'sky.png', id: 'sky'},
 			{src: 'ground.png', id: 'ground'},
 			{src: 'hill1.png', id: 'hill1'},
-			{src: 'hill2.png', id: 'hill2'}
+			{src: 'hill2.png', id: 'hill2'},
+			{src: 'obstacle.jpg', id: 'obstacle'}
 		];
 		loader = new createjs.LoadQueue(false);
 		loader.on('progress',handleProgress);
@@ -45,10 +46,13 @@
 		hill2 = new createjs.Bitmap(loader.getResult('hill2'));
 		hill2.setTransform(Math.random() * w, h - hill2.image.height * 3 - groundImg.height, 3, 3);
 
+		obstacle = new createjs.Bitmap(loader.getResult('obstacle'));
+		obstacle.setTransform(w, h - obstacle.image.height, 0.7, 1);
+
 		man = new Man();
 		man.init(loader.getResult('grant'));
 
-		stage.addChild(sky, ground, hill1, hill2, man.sprite);
+		stage.addChild(sky, ground, hill1, hill2, obstacle, man.sprite);
 
 		createjs.Ticker.on('tick', tick);
 		createjs.Ticker.timingMode = createjs.Ticker.RAF;
@@ -69,7 +73,7 @@
 
 		man.update();
 
-		ground.x = (ground.x - deltaS * 150) % ground.tileW;
+		ground.x = (ground.x - deltaS * 200) % ground.tileW;
 
 		hill1.x = (hill1.x - deltaS * 30);
 		if (hill1.x + hill1.image.width * hill1.scaleX <= 0) {
@@ -78,6 +82,11 @@
 		hill2.x = (hill2.x - deltaS * 45);
 		if (hill2.x + hill2.image.width * hill2.scaleX <= 0) {
 			hill2.x = w;
+		}
+
+		obstacle.x = (obstacle.x - deltaS * 200);
+		if (obstacle.x + obstacle.image.width * obstacle.scaleX <= 0) {
+			obstacle.x = w;
 		}
 
 		stage.update(event);
