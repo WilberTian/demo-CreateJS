@@ -18,8 +18,14 @@
 			{src: 'hill2.png', id: 'hill2'}
 		];
 		loader = new createjs.LoadQueue(false);
+		loader.on('progress',handleProgress);
 		loader.addEventListener('complete', handleCompleted);
 		loader.loadManifest(manifest, true, './');
+	}
+
+	function handleProgress(e){
+		var progress = e.progress*100;
+		console.log(progress);
 	}
 
 	function handleCompleted() {
