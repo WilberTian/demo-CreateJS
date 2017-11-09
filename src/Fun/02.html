@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=UTF-8"
+    <title>CreateJS demo</title>
+    <style>
+        canvas#demoCanvas {
+            border: 1px solid;
+            background: aliceblue;
+        }
+    </style>
+	<script src="../../libs/easeljs-0.8.2.min.js"></script>
+	<script>
+        var stage, circle1, circle2;
+        var circleWidth = 20;
+
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			circle1 = new createjs.Shape();
+			circle1.graphics.beginFill("red").drawCircle(0, 0, circleWidth);
+			circle1.x = circleWidth;
+			circle1.y = 60;
+			stage.addChild(circle1);
+			
+			circle2 = new createjs.Shape();
+			circle2.graphics.beginFill("red").drawCircle(0, 0, circleWidth);
+			circle2.x = circleWidth;
+			circle2.y = 140;
+			stage.addChild(circle2);
+
+			stage.update();
+            createjs.Ticker.on("tick", tick);
+			createjs.Ticker.setFPS(60);
+		}
+		
+		function tick(event) {
+			if (!createjs.Ticker.getPaused()) {
+				circle2.x = circle2.x + 4;
+				if ((circle2.x + circleWidth) >= stage.canvas.width) {
+					createjs.Ticker.setPaused(true);
+					// circle2.x = circleWidth;
+				}
+
+				circle1.x = circle1.x + 1;
+				if ((circle1.x + circleWidth) >= stage.canvas.width) {
+					createjs.Ticker.setPaused(true);
+				}
+				stage.update(event); // important!!
+			}
+		}
+
+		function togglePause() {
+			var paused = !createjs.Ticker.getPaused();
+			createjs.Ticker.setPaused(paused);
+		}
+
+		function reset() {
+			
+		}
+	</script>
+</head>
+<body onload="init();">
+	<div>
+		小乌龟和小兔子，谁的速度快
+	</div>
+	<canvas id="demoCanvas" width="500" height="200">
+		alternate content
+	</canvas>
+	<button id="start-btn" onclick="togglePause();">Start</button>
+	<button id="pause-btn" onclick="togglePause();">Pause</button>
+	<button id="pause-btn" onclick="togglePause();">Reset</button>
+</body>
+</html>
